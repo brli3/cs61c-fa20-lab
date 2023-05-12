@@ -6,5 +6,12 @@
 
 void lfsr_calculate(uint16_t *reg) {
     /* YOUR CODE HERE */
+    uint16_t a = (*reg >> 0) & 1;
+    uint16_t b = (*reg >> 2) & 1;
+    uint16_t c = (*reg >> 3) & 1;
+    uint16_t d = (*reg >> 5) & 1;
+    uint16_t x = a ^ b ^ c ^ d;
+    *reg = *reg >> 1;
+    *reg = *reg | (x << 15);
 }
 
