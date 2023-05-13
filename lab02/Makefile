@@ -1,15 +1,26 @@
 UNAME_S := $(shell uname -s)
-CC=gcc
-LD=gcc
-CFLAGS=-ggdb -Wall -std=c99
+#CC=gcc
+CC=clang
+#LD=gcc
+LD=clang
+#CFLAGS=-ggdb -Wall -std=c99
+CFLAGS=-Wall -g -std=c99
 LDFLAGS=
 
 ifeq ($(UNAME_S), Darwin)
-    MEMCHECK=valgrind --tool=memcheck --leak-check=full --track-origins=yes --dsymutil=yes
+    #MEMCHECK=valgrind --tool=memcheck --leak-check=full --track-origins=yes --dsymutil=yes
+    MEMCHECK=detect_leaks=1:halt_on_error=1
+    #CFLAGS += -fsanitize=address -fno-omit-frame-pointer
+    #LDFLAGS += -fsanitize=address
 endif
 
 ifeq ($(UNAME_S), Linux)
     MEMCHECK=valgrind --tool=memcheck --leak-check=full --track-origins=yes
+endif
+
+ifeq (${MAKECMDGOALS}, vector-memcheck) 
+    CFLAGS += -fsanitize=address -fno-omit-frame-pointer
+    LDFLAGS += -fsanitize=address
 endif
 
 BIT_OPS_OBJS = bit_ops.o test_bit_ops.o
@@ -30,6 +41,9 @@ $(BIT_OPS_PROG): $(BIT_OPS_OBJS)
 
 $(LFSR_PROG): $(LFSR_OBJS)
 	$(CC) $(CFLAGS) -g -o $(LFSR_PROG) $(LFSR_OBJS) $(LDFLAGS)
+
+$(VECTOR_PROG): $(VECTOR_OBJS)
+	$(CC) $(CFLAGS) -g -o $(VECTOR_PROG) $(VECTOR_OBJS) $(LDFLAGS)
 
 lfsr.c: lfsr.h
 test_lfsr.c: lfsr.h

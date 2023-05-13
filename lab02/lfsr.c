@@ -11,7 +11,10 @@ void lfsr_calculate(uint16_t *reg) {
     uint16_t c = (*reg >> 3) & 1;
     uint16_t d = (*reg >> 5) & 1;
     uint16_t x = a ^ b ^ c ^ d;
+    // shift 1 bit to the right
     *reg = *reg >> 1;
-    *reg = *reg | (x << 15);
+    // set first bit 
+    *reg &= ~(1 << 15);
+    *reg |= (x << 15);
 }
 
