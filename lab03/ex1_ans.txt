@@ -1,0 +1,8 @@
+1.
+	.data: data segment of memory. For initialising variables
+	.word: 32 bits(8 bytes) of memory reserved for variables
+	.text: text/program segment of memory
+2. output 34 - 9th Fibonacci number
+3. n is stored at 0x10000010
+4. changed t3 to 13 after the initial value was assigned
+	
