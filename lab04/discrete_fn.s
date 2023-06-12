@@ -12,6 +12,8 @@ pos3:   .asciiz "f(3) should be 5, and it is: "
 output: .word   6, 61, 17, -38, 19, 42, 5
 .text
 main:
+    li t0, 0
+
     la a0, neg3
     jal print_str
     li a0, -3
@@ -77,7 +79,10 @@ main:
 # Think: why might having a1 be useful?
 f:
     # YOUR CODE GOES HERE!
-
+    slli t1, t0, 2
+    add t1, t1, a1
+    lw a0, 0(t1)
+    addi t0, t0, 1
     jr ra               # Always remember to jr ra after your function!
 
 print_int:
